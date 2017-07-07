@@ -20,7 +20,15 @@ export class ProductService {
                 .catch(this.handleError);
   }
 
-  private handleError(error: Response): Observable<string> {
+  getProduct(id: number): Observable<IProduct> {
+    return this.getProducts()
+                .map((products: IProduct[]) => {
+                  let product = products.find(p => p.productId == id);
+                  return product === undefined ? null : product;
+                });
+  }
+
+  private handleError(error: Response) {
     try {
       console.error(error);
       return  Observable.throw(error.json().error || 'Server error');
